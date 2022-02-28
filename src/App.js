@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import moment from "moment";
 
 const TICK_TIME = 150;;
@@ -12,12 +12,20 @@ function App() {
   const [isActive, setIsActive] = useState(false);
   const [text, setText] = useState('')
   const [time, setTime] = useState([])
+  const minutesInputRef = useRef()
 
+  function setTimer() {
+    if (minutesInputRef.current?.value !== "") {
+      setSeconds(+minutesInputRef.current?.value * 60)
+    } else {
+      setSeconds(TICK_TIME)
+    }
+  }
  
     
   function toggle() {
     setIsActive(!isActive);
-    setText('вы нажали на старт')
+    setText( isActive ? 'вы нажали на паузу' : 'вы нажали на старт')
     
 
   }
@@ -32,11 +40,6 @@ function App() {
   
   }
 
- function onChange(evt) {
-  setIsActive({
-    savedTick:evt.target.value})
- }
-  
   useEffect(() => {
     let interval = null;
 
@@ -67,7 +70,15 @@ function App() {
      {/* <input value={moment(seconds * 1000).format('mm:ss')}/>    */}
      {moment(seconds * 1000).format('mm:ss')}
       </div>
+      <div>
+        <input ref={minutesInputRef}
+               style={{height: 30, width: 30, textAlign: "center", fontSize: 20}}/>
+        <p> минуты</p>
+      </div>
       <div className="row">
+      <button className="stop" onClick={setTimer}>
+          Set initial time
+        </button>
         <button className="toggle" onClick={toggle}>
           {isActive ? 'Pause' : 'Start'}
         </button>
