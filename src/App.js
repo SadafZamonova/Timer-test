@@ -28,11 +28,9 @@ function App() {
     setTime( moment(seconds * 1000).format('mm:ss') )
   }
 
-//  function onChange(evt) {
-//   setSeconds({
-//     savedTick: evt.target.value 
-//   })
-//  }
+ function onChange(evt) {
+  setIsActive(evt.target.value)
+ }
   
   useEffect(() => {
     let interval = null;
@@ -60,8 +58,8 @@ function App() {
     <div className="app">
       <div className="time">
         
-    <input value = { seconds.moment(seconds * 1000).format('mm:ss') }   >
-    </input>
+
+    <input value = {moment(seconds * 1000).format('mm:ss')}   onChange={onChange}/>
       
       </div>
       <div className="row">
