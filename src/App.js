@@ -11,13 +11,14 @@ function App() {
   const [seconds, setSeconds] = useState(savedTick);
   const [isActive, setIsActive] = useState(false);
   const [text, setText] = useState('')
-  const [time, setTime] = useState('')
+  const [time, setTime] = useState([])
 
  
     
   function toggle() {
     setIsActive(!isActive);
     setText('вы нажали на старт')
+    
 
   }
 
@@ -25,11 +26,15 @@ function App() {
     setIsActive(false);
     setSeconds(TICK_TIME);
     setText('вы нажали на стоп')
-    setTime( moment(seconds * 1000).format('mm:ss') )
+    const result = [...time];
+    result.unshift(moment(seconds * 1000).format('mm:ss'));
+    setTime( result );
+  
   }
 
  function onChange(evt) {
-  setIsActive(evt.target.value)
+  setIsActive({
+    savedTick:evt.target.value})
  }
   
   useEffect(() => {
@@ -59,8 +64,8 @@ function App() {
       <div className="time">
         
 
-    <input value = {moment(seconds * 1000).format('mm:ss')}   onChange={onChange}/>
-      
+     {/* <input value={moment(seconds * 1000).format('mm:ss')}/>    */}
+     {moment(seconds * 1000).format('mm:ss')}
       </div>
       <div className="row">
         <button className="toggle" onClick={toggle}>
@@ -72,7 +77,9 @@ function App() {
       </div>
       <div>
         <h2> {text} </h2>
-        <h3> {time} </h3>
+      </div>
+      <div>
+        {time.map((print, index) =>((<p style={{backgroundColor: index ===0 ? 'yellow' : 'grey' }} key={index}> {print} </p>))) }
       </div>
     </div>
   
