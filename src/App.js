@@ -2,18 +2,19 @@ import './App.css';
 import React, { useState, useEffect, useRef } from 'react';
 import moment from "moment";
 
-const TICK_TIME = 150;;
+
+const TICK_TIME = 150;
 
 function App() {
-  
-
   let savedTick = parseInt(localStorage.getItem("tick") || TICK_TIME)
   const [seconds, setSeconds] = useState(savedTick);
   const [isActive, setIsActive] = useState(false);
-  const [text, setText] = useState('')
-  const [time, setTime] = useState([])
-  const minutesInputRef = useRef()
+  const [text, setText] = useState();
+  const [time, setTime] = useState([ ]);
+  const minutesInputRef = useRef('');
 
+
+  
   function setTimer() {
     if (minutesInputRef.current?.value !== "") {
       setSeconds(+minutesInputRef.current?.value * 60)
@@ -26,9 +27,8 @@ function App() {
   function toggle() {
     setIsActive(!isActive);
     setText( isActive ? 'вы нажали на паузу' : 'вы нажали на старт')
-    
-
   }
+
 
   function stop() {
     setIsActive(false);
@@ -37,7 +37,6 @@ function App() {
     const result = [...time];
     result.unshift(moment(seconds * 1000).format('mm:ss'));
     setTime( result );
-  
   }
 
   useEffect(() => {
@@ -47,27 +46,21 @@ function App() {
       interval = setInterval(() => {
         setSeconds(seconds => seconds - 1);
       }, 1000);
-
       if (seconds === 0) {
         stop()
       }
     } else {
       clearInterval(interval);
     }
-
-    localStorage.setItem("tick", seconds.toString())
-
+    localStorage.setItem('key', time.toString())
     return () => clearInterval(interval)
- 
-  }, [isActive, seconds]);
+  }, [isActive, seconds, time]);
   
 
   return (
     <div className="app">
       <div className="time">
         
-
-     {/* <input value={moment(seconds * 1000).format('mm:ss')}/>    */}
      {moment(seconds * 1000).format('mm:ss')}
       </div>
       <div>
