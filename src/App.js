@@ -3,14 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import moment from "moment";
 
 
-const TICK_TIME = 150;
+
 
 function App() {
-  let savedTick = parseInt(localStorage.getItem("tick") || TICK_TIME)
-  const [seconds, setSeconds] = useState(savedTick);
+  const [seconds, setSeconds] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [text, setText] = useState();
-  const [time, setTime] = useState([ ]);
+  const [time, setTime] = useState(localStorage.getItem('key2') ? JSON.parse(localStorage.getItem('key2')) : []);
   const minutesInputRef = useRef('');
 
 
@@ -19,7 +18,7 @@ function App() {
     if (minutesInputRef.current?.value !== "") {
       setSeconds(+minutesInputRef.current?.value * 60)
     } else {
-      setSeconds(TICK_TIME)
+      setSeconds('')
     }
   }
  
@@ -32,7 +31,7 @@ function App() {
 
   function stop() {
     setIsActive(false);
-    setSeconds(TICK_TIME);
+    setSeconds('');
     setText('вы нажали на стоп')
     const result = [...time];
     result.unshift(moment(seconds * 1000).format('mm:ss'));
@@ -52,7 +51,7 @@ function App() {
     } else {
       clearInterval(interval);
     }
-    localStorage.setItem('key', time.toString())
+    localStorage.setItem('key2', JSON.stringify(time))
     return () => clearInterval(interval)
   }, [isActive, seconds, time]);
   
