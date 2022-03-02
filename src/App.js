@@ -4,7 +4,6 @@ import moment from "moment";
 
 
 
-
 function App() {
   let secondTick = localStorage.getItem('second');
   const [seconds, setSeconds] = useState(+secondTick);
