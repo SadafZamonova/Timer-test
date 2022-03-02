@@ -6,8 +6,9 @@ import moment from "moment";
 
 
 function App() {
-  const [seconds, setSeconds] = useState('');
-  const [isActive, setIsActive] = useState(false);
+  let secondTick = localStorage.getItem('second');
+  const [seconds, setSeconds] = useState(+secondTick);
+  const [isActive, setIsActive] = useState(!!secondTick);
   const [text, setText] = useState();
   const [time, setTime] = useState(localStorage.getItem('key2') ? JSON.parse(localStorage.getItem('key2')) : []);
   const minutesInputRef = useRef('');
@@ -51,7 +52,8 @@ function App() {
     } else {
       clearInterval(interval);
     }
-    localStorage.setItem('key2', JSON.stringify(time))
+    localStorage.setItem('second', JSON.stringify(seconds));
+    localStorage.setItem('key2', JSON.stringify(time));
     return () => clearInterval(interval)
   }, [isActive, seconds, time]);
   
